@@ -11,23 +11,17 @@ use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
-    // public function home()
-    // {
-    //     return view('public.home');
-    // }
-
     public function home()
     {
-        $viona_dokters = \App\Models\Dokter::all();
+        $viona_dokters = Dokter::all();
         return view('public.home', compact('viona_dokters'));
     }
 
     public function dokter()
     {
-        $viona_dokters = \App\Models\Dokter::all();
+        $viona_dokters = Dokter::all();
         return view('public.dokter', compact('viona_dokters'));
     }
-
 
     public function jadwal()
     {
@@ -35,12 +29,21 @@ class PublicController extends Controller
         return view('public.jadwal', compact('viona_jadwals'));
     }
 
-    public function reservasi()
+    /**
+     * Menampilkan form reservasi.
+     * Menerima optional query parameter `dokter_id` untuk pre-select dokter.
+     */
+    public function reservasi(Request $request)
     {
         $viona_dokters = Dokter::all();
-        return view('public.reservasi', compact('viona_dokters'));
+        $selectedDokterId = $request->query('dokter_id'); // Ambil dari query string
+
+        return view('public.reservasi', compact('viona_dokters', 'selectedDokterId'));
     }
 
+    /**
+     * Simpan data reservasi baru dan pasien.
+     */
     public function simpanReservasi(Request $request)
     {
         $request->validate([
@@ -51,7 +54,6 @@ class PublicController extends Controller
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'tanggal_lahir' => 'required|date',
             'riwayat_penyakit' => 'nullable|string',
-
             'dokter_id' => 'required|exists:viona_dokters,id',
             'tanggal' => 'required|date',
             'keluhan' => 'required|string',
@@ -91,7 +93,6 @@ class PublicController extends Controller
             'pesan' => 'required|string|max:500',
         ]);
 
-        // Simpan data ke tabel 'kontaks'
         Kontak::create([
             'nama' => $request->nama,
             'email' => $request->email,
@@ -100,6 +101,4 @@ class PublicController extends Controller
 
         return redirect()->route('public.kontak')->with('success', 'Pesan berhasil dikirim!');
     }
-
-
 }

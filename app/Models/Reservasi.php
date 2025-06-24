@@ -9,7 +9,7 @@ class Reservasi extends Model
 
     protected $table = 'viona_reservasis';
 
-    protected $fillable = ['dokter_id', 'pasien_id', 'tanggal_kunjungan', 'status'];
+    protected $fillable = ['dokter_id', 'pasien_id', 'tanggal_kunjungan','keluhan', 'status'];
 
     public function dokter()
     {

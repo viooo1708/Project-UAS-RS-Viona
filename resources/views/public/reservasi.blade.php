@@ -7,7 +7,7 @@
 
     {{-- Judul --}}
     <div class="text-center mb-4">
-        <h1 class="fw-bold" style="color: #6C63FF;">Formulir Reservasi Dokter</h1>
+        <h1 class="fw-bold" style="color: #d63384;">Formulir Reservasi Dokter</h1>
         <p class="text-muted">Silakan lengkapi data pasien dan data reservasi berikut</p>
     </div>
 
@@ -74,7 +74,10 @@
             <select name="dokter_id" id="dokter_id" class="form-select" required>
                 <option value="">-- Pilih Dokter --</option>
                 @foreach ($viona_dokters as $dokter)
-                    <option value="{{ $dokter->id }}">{{ $dokter->nama }} - {{ $dokter->spesialis }}</option>
+                    <option value="{{ $dokter->id }}"
+                        {{ (isset($selectedDokterId) && $selectedDokterId == $dokter->id) ? 'selected' : '' }}>
+                        {{ $dokter->nama }} - {{ $dokter->spesialis }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -89,7 +92,9 @@
             <textarea name="keluhan" id="keluhan" rows="3" class="form-control" required></textarea>
         </div>
 
-        <button type="submit" class="btn px-4 py-2" style="background-color: #6C63FF; color: white;">Kirim Reservasi</button>
+        <button type="submit" class="btn px-4 py-2" style="background-color: #d63384; color: white;">
+            Kirim Reservasi
+        </button>
     </form>
 </div>
 @endsection
