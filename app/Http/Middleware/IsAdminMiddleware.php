@@ -3,11 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class IsAdmin
+class IsAdminMiddleware
 {
     public function handle($request, Closure $next)
     {
@@ -15,6 +13,7 @@ class IsAdmin
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Akses ditolak.');
+        return redirect('/')->with('error', 'Kamu bukan admin.');
     }
 }
+

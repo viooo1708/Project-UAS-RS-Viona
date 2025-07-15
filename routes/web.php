@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KontakController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\IsAdminMiddleware;
 
 // PUBLIC ROUTES
 Route::get('/', [PublicController::class, 'home'])->name('home');
@@ -45,16 +46,29 @@ Route::post('/kontak', [PublicController::class, 'simpanKontak'])->name('public.
 //     Route::resource('reservasi', ReservasiController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
 // });
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', fn() => redirect()->route('admin.dokter.index'));
+// Route::prefix('admin')->name('admin.')->group(function () {
+//     Route::get('/', fn() => redirect()->route('admin.dokter.index'));
 
-    Route::resource('dokter', DokterController::class);
-    Route::resource('pasien', PasienController::class);
-    Route::resource('jadwal', JadwalController::class);
-    Route::resource('reservasi', ReservasiController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
-    Route::resource('kontak', KontakController::class)->only(['index', 'show', 'destroy']);
+//     Route::resource('dokter', DokterController::class);
+//     Route::resource('pasien', PasienController::class);
+//     Route::resource('jadwal', JadwalController::class);
+//     Route::resource('reservasi', ReservasiController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+//     Route::resource('kontak', KontakController::class)->only(['index', 'show', 'destroy']);
 
-});
+// });
+
+Route::prefix('admin')
+    ->middleware(['auth', IsAdminMiddleware::class])
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', fn() => redirect()->route('admin.dokter.index'));
+
+        Route::resource('dokter', DokterController::class);
+        Route::resource('pasien', PasienController::class);
+        Route::resource('jadwal', JadwalController::class);
+        Route::resource('reservasi', ReservasiController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+        Route::resource('kontak', KontakController::class)->only(['index', 'show', 'destroy']);
+    });
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
