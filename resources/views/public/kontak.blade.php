@@ -13,7 +13,7 @@
                 <li><strong>Alamat:</strong> Jl. Kesehatan No. 123, Padang</li>
                 <li><strong>Telepon:</strong> (0751) 123-456</li>
                 <li><strong>Email:</strong> info@rsviona.com</li>
-                <li><strong>Jam Operasional:</strong> Senin - Sabtu (08.00 - 16.00)</li>
+                <li><strong>Jam Operasional:</strong> Senin - Sabtu (08.00 - 19.00)</li>
             </ul>
         </div>
 

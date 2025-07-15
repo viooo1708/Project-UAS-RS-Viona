@@ -60,6 +60,11 @@
                                 <h4 class="mb-2">{{ $dokter->nama }}</h4>
                                 <p class="mb-1"><strong>Spesialis:</strong> {{ $dokter->spesialis }}</p>
                                 <p class="mb-1 text-warning"><strong>Rating:</strong> {{ $dokter->rating ?? 'Belum ada rating' }}</p>
+
+                                <!-- {{-- Optional Tambahan Info --}}
+                                <p class="mb-1"><strong>Jam Praktik:</strong> {{ $dokter->jam_praktik ?? 'Tidak tersedia' }}</p>
+                                <p class="mb-1"><strong>No. Kontak:</strong> {{ $dokter->kontak ?? 'Tidak tersedia' }}</p> -->
+
                                 <a href="{{ route('public.reservasi', ['dokter_id' => $dokter->id]) }}" class="btn btn-primary mt-3 rounded-pill">
                                     Reservasi Sekarang
                                 </a>
@@ -78,3 +83,8 @@
     </div>
 </div>
 @endsection
+
+{{-- Tambahkan ini jika belum include Bootstrap JS --}}
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@endpush
