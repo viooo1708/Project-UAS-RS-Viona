@@ -9,7 +9,7 @@ class Reservasi extends Model
 
     protected $table = 'viona_reservasis';
 
-    protected $fillable = ['dokter_id', 'pasien_id', 'tanggal_kunjungan','keluhan', 'status'];
+    protected $fillable = ['dokter_id', 'pasien_id', 'tanggal_kunjungan','keluhan', 'status', 'nomor_antrian'];
 
     public function dokter()
     {
@@ -20,4 +20,10 @@ class Reservasi extends Model
     {
         return $this->belongsTo(Pasien::class, 'pasien_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'pasien_id');
+    }
+    
 }

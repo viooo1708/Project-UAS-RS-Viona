@@ -17,9 +17,13 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            if (Auth::user()->role == 'admin') {
+            $user = Auth::user();
+            $request->session()->flash('success', 'Selamat datang, ' . $user->name . '! Anda berhasil login.');
+
+            if ($user->role == 'admin') {
                 return redirect()->route('admin.dokter.index');
             }
+
             return redirect()->route('home');
         }
 
@@ -28,10 +32,11 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('/');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/')->with('success', 'Anda berhasil logout.');
     }
 }
-

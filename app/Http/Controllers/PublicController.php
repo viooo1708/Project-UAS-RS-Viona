@@ -8,6 +8,8 @@ use App\Models\Kontak;
 use App\Models\Pasien;
 use App\Models\Reservasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Rating;
 
 class PublicController extends Controller
 {
@@ -69,15 +71,25 @@ class PublicController extends Controller
             'riwayat_penyakit' => $request->riwayat_penyakit,
         ]);
 
+         // Hitung nomor antrian berdasarkan dokter dan tanggal
+        $nomorAntrian = Reservasi::where('dokter_id', $request->dokter_id)
+            ->whereDate('tanggal_kunjungan', $request->tanggal)
+            ->count() + 1;
+
         Reservasi::create([
-            'pasien_id' => $pasien->id,
+            // 'pasien_id' => $pasien->id,
+            'pasien_id' => Auth::id(),
             'dokter_id' => $request->dokter_id,
             'tanggal_kunjungan' => $request->tanggal,
             'keluhan' => $request->keluhan,
             'status' => 'pending',
+            'nomor_antrian' => $nomorAntrian,
         ]);
 
-        return redirect()->route('public.reservasi')->with('success', 'Reservasi berhasil dikirim!');
+        // return redirect()->route('public.reservasi')->with('success', 'Reservasi berhasil dikirim!');
+        return redirect()->route('public.reservasi.konfirmasi', ['tanggal' => $request->tanggal])
+        ->with('success', 'Reservasi berhasil! Anda dapat melihat nomor antrian Anda.');
+
     }
 
     public function kontak()
@@ -101,4 +113,31 @@ class PublicController extends Controller
 
         return redirect()->route('public.kontak')->with('success', 'Pesan berhasil dikirim!');
     }
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['reservasi', 'simpanReservasi']);
+    }
+
+    public function konfirmasiReservasi(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $userId = Auth::id();
+
+        $reservasi = Reservasi::where('pasien_id', $userId)
+                    ->whereDate('tanggal_kunjungan', $tanggal)
+                    ->latest()
+                    ->first();
+
+        $antrianKe = Reservasi::whereDate('tanggal_kunjungan', $tanggal)
+                    ->where('dokter_id', $reservasi->dokter_id)
+                    ->where('id', '<=', $reservasi->id)
+                    ->count();
+
+        return view('public.konfirmasi', compact('reservasi', 'antrianKe'));
+    }
+
+    
+
+
 }

@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm" style="background-color: #ffe3ec;">
-
     <div class="container">
         <a class="navbar-brand fw-bold" href="{{ route('home') }}" style="color: #d63384;">
             🏥 RS Viona
@@ -54,12 +53,20 @@
                     @endif
                 @endauth
 
-                {{-- ======= LOGIN/LOGOUT BUTTON ======= --}}
+                {{-- ======= LOGIN/LOGOUT & USER NAME ======= --}}
                 @guest
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}" style="color: #d63384;">Login</a>
                     </li>
                 @else
+                    {{-- Tampilkan nama user (pasien/admin) --}}
+                    <li class="nav-item d-flex align-items-center me-2">
+                        <span class="nav-link disabled" style="color: #d63384;">
+                            👤 {{ Auth::user()->name }}
+                        </span>
+                    </li>
+
+                    {{-- Tombol Logout --}}
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf

@@ -12,6 +12,7 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-pink text-center">
                         <tr>
+                            <th>No. Antrian</th>
                             <th>Nama Pasien</th>
                             <th>Dokter</th>
                             <th>Jadwal</th>
@@ -22,10 +23,11 @@
                     <tbody>
                         @forelse ($viona_reservasis as $reservasi)
                         <tr>
-                            <td>{{ $reservasi->pasien->nama ?? '-' }}</td>
+                            <td class="text-center">{{ $reservasi->nomor_antrian ?? '-' }}</td>
+                            <td>{{ $reservasi->user->name ?? '-' }}</td>
                             <td>{{ $reservasi->dokter->nama ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($reservasi->tanggal_kunjungan)->format('d-m-Y') }}</td>
-                            <td>
+                            <td class="text-center">
                                 @if ($reservasi->status === 'pending')
                                     <span class="badge bg-warning text-dark">Pending</span>
                                 @elseif ($reservasi->status === 'selesai')
@@ -35,8 +37,8 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="d-flex flex-wrap gap-1">
-                                    {{-- Tombol Ubah Status --}}
+                                <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                    {{-- Tombol Ubah Status ke Pending --}}
                                     <form action="{{ route('admin.reservasi.updateStatus', $reservasi->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
@@ -44,6 +46,7 @@
                                         <button class="btn btn-sm btn-outline-secondary">Pending</button>
                                     </form>
 
+                                    {{-- Tombol Ubah Status ke Selesai --}}
                                     <form action="{{ route('admin.reservasi.updateStatus', $reservasi->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
@@ -52,7 +55,7 @@
                                     </form>
 
                                     {{-- Tombol Hapus --}}
-                                    <form action="{{ route('admin.reservasi.destroy', $reservasi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus?')">
+                                    <form action="{{ route('admin.reservasi.destroy', $reservasi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-outline-danger">Hapus</button>
@@ -62,7 +65,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Belum ada data reservasi.</td>
+                            <td colspan="6" class="text-center text-muted">Belum ada data reservasi.</td>
                         </tr>
                         @endforelse
                     </tbody>

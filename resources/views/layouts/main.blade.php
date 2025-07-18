@@ -7,7 +7,6 @@
 
     <!-- Bootstrap CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Custom Pastel Pink Theme -->
@@ -16,6 +15,7 @@
             background-color: #fff0f5;
             font-family: 'Segoe UI', sans-serif;
             color: #4a4a4a;
+            padding-top: 80px;
         }
 
         .navbar {
@@ -33,7 +33,7 @@
             color: #c2255c !important;
         }
 
-         .nav-link.active {
+        .nav-link.active {
             font-weight: bold;
             border-bottom: 2px solid #d63384;
         }
@@ -114,7 +114,27 @@
     {{-- Navbar --}}
     @include('layouts.header')
 
-    {{-- Konten Utama --}}
+{{-- Flash Messages - Positioned below navbar --}}
+@if (session('success') || session('error'))
+    <div class="position-fixed top-0 start-50 translate-middle-x mt-4" style="z-index: 1050; width: 90%; max-width: 600px;">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @endif
+    </div>
+@endif
+
+
+    {{-- Main Content --}}
     <main class="container">
         @yield('content')
     </main>

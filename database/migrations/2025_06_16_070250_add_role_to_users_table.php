@@ -7,22 +7,22 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migrasi untuk menambahkan kolom `role` ke tabel `users`.
      */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['admin', 'public'])->default('public');
+            $table->enum('role', ['admin', 'pasien'])->default('pasien')->after('password');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Kembalikan migrasi: hapus kolom `role` dari tabel `users`.
      */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('role');
         });
     }
 };

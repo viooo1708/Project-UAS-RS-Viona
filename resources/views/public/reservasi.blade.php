@@ -2,6 +2,11 @@
 
 @section('title', 'Reservasi')
 
+@php
+    use Illuminate\Support\Facades\Auth;
+    $user = Auth::user();
+@endphp
+
 @section('content')
 <div class="container mt-5">
 
@@ -27,41 +32,45 @@
 
         <div class="mb-3">
             <label for="nama" class="form-label">Nama Pasien</label>
-            <input type="text" name="nama" id="nama" class="form-control" required>
+            <input type="text" name="nama" id="nama" class="form-control" required
+                value="{{ old('nama', $user->name ?? '') }}">
         </div>
 
         <div class="mb-3">
             <label for="alamat" class="form-label">Alamat</label>
-            <textarea name="alamat" id="alamat" rows="2" class="form-control" required></textarea>
+            <textarea name="alamat" id="alamat" rows="2" class="form-control" required>{{ old('alamat', $user->alamat ?? '') }}</textarea>
         </div>
 
         <div class="mb-3">
             <label for="no_hp" class="form-label">No. HP</label>
-            <input type="text" name="no_hp" id="no_hp" class="form-control" required>
+            <input type="text" name="no_hp" id="no_hp" class="form-control" required
+                value="{{ old('no_hp', $user->no_hp ?? '') }}">
         </div>
 
         <div class="mb-3">
             <label for="nik" class="form-label">NIK</label>
-            <input type="text" name="nik" id="nik" class="form-control" required>
+            <input type="text" name="nik" id="nik" class="form-control" required
+                value="{{ old('nik', $user->nik ?? '') }}">
         </div>
 
         <div class="mb-3">
             <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
             <select name="jenis_kelamin" id="jenis_kelamin" class="form-select" required>
                 <option value="">-- Pilih --</option>
-                <option value="Laki-laki">Laki-laki</option>
-                <option value="Perempuan">Perempuan</option>
+                <option value="Laki-laki" {{ old('jenis_kelamin', $user->jenis_kelamin ?? '') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                <option value="Perempuan" {{ old('jenis_kelamin', $user->jenis_kelamin ?? '') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
             </select>
         </div>
 
         <div class="mb-3">
             <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required>
+            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required
+                value="{{ old('tanggal_lahir', $user->tanggal_lahir ?? '') }}">
         </div>
 
         <div class="mb-4">
             <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
-            <textarea name="riwayat_penyakit" id="riwayat_penyakit" rows="2" class="form-control"></textarea>
+            <textarea name="riwayat_penyakit" id="riwayat_penyakit" rows="2" class="form-control">{{ old('riwayat_penyakit', $user->riwayat_penyakit ?? '') }}</textarea>
         </div>
 
         <hr class="my-4">
@@ -75,7 +84,7 @@
                 <option value="">-- Pilih Dokter --</option>
                 @foreach ($viona_dokters as $dokter)
                     <option value="{{ $dokter->id }}"
-                        {{ (isset($selectedDokterId) && $selectedDokterId == $dokter->id) ? 'selected' : '' }}>
+                        {{ (old('dokter_id', $selectedDokterId ?? '') == $dokter->id) ? 'selected' : '' }}>
                         {{ $dokter->nama }} - {{ $dokter->spesialis }}
                     </option>
                 @endforeach
@@ -84,12 +93,13 @@
 
         <div class="mb-3">
             <label for="tanggal" class="form-label">Tanggal Kunjungan</label>
-            <input type="date" name="tanggal" id="tanggal" class="form-control" required>
+            <input type="date" name="tanggal" id="tanggal" class="form-control" required
+                value="{{ old('tanggal') }}">
         </div>
 
         <div class="mb-4">
             <label for="keluhan" class="form-label">Keluhan</label>
-            <textarea name="keluhan" id="keluhan" rows="3" class="form-control" required></textarea>
+            <textarea name="keluhan" id="keluhan" rows="3" class="form-control" required>{{ old('keluhan') }}</textarea>
         </div>
 
         <button type="submit" class="btn px-4 py-2" style="background-color: #d63384; color: white;">
